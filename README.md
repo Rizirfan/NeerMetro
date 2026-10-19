@@ -2,7 +2,7 @@
 
 An intelligent, bilingual, next-generation river transit web platform for the Chennai Water Metro system along the historic Cooum waterway.
 
-![NEERMETRO Logo](/public/logo/https://github.com/Rizirfan/NeerMetro/blob/main/logo/3d1%20logo.jpg?raw=true)
+![NEERMETRO Logo](/public/logo/3d1 logo.jpg)
 
 ## Overview
 
