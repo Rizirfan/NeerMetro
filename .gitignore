@@ -27,5 +27,4 @@ dist-ssr
 scratch/
 .agents/
 .taste-skill/
-index/
 skills-lock.json

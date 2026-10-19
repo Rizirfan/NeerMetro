@@ -2,6 +2,10 @@
 
 An intelligent, bilingual, next-generation river transit web platform for the Chennai Water Metro system along the historic Cooum waterway.
 
+> 🌊 **Official Live Web App**: [https://neer-metro.vercel.app/#home](https://neer-metro.vercel.app/#home)  
+> 🚢 **Source Repository**: [https://github.com/Rizirfan/NeerMetro.git](https://github.com/Rizirfan/NeerMetro.git)  
+> 📖 **Landing Page Showcase**: [index/index.html](index/index.html)
+
 ![NEERMETRO Logo](public/logo/3d1%20logo.jpg)
 
 ## Overview
@@ -64,6 +68,9 @@ The compiled assets will be in the `dist/` directory ready for deployment.
 
 ## Deploying to Vercel
 
+The web application is live in production at:
+👉 **[https://neer-metro.vercel.app/#home](https://neer-metro.vercel.app/#home)**
+
 This repository includes a pre-configured `vercel.json` with Single Page Application rewrites and Vite build settings:
 
 1. Import this repository (`https://github.com/Rizirfan/NeerMetro.git`) in your [Vercel Dashboard](https://vercel.com/new).
@@ -77,3 +84,6 @@ This repository includes a pre-configured `vercel.json` with Single Page Applica
 ## License
 
 Proprietary / Open transit development for Chennai Water Metro Mobility.
+
+## chennai River Map
+("[Maplink](https://data.opencity.in/dataset/chennai-waterbodies/resource/c8135603-f299-44d3-8c99-d0d01f6eb2cf)")
