@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo/neermetro-3d-mark.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>NEERMETRO — Chennai Water Metro</title>
+    <meta name="description" content="Plan, book and track your ferry across the Cooum River: 10 terminals, 3 lines, live map, QR boarding passes, fares from ₹15." />
+    <!-- Installable desktop / mobile web app -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0b647a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="NEERMETRO" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/logo/neermetro-3d-mark.png" color="#0b647a" />
+    <script>
+      document.documentElement.classList.add('js');
+      try {
+        var standalone =
+          matchMedia('(display-mode: standalone)').matches ||
+          matchMedia('(display-mode: window-controls-overlay)').matches ||
+          matchMedia('(display-mode: minimal-ui)').matches ||
+          matchMedia('(display-mode: fullscreen)').matches ||
+          navigator.standalone === true;
+        if (standalone) document.documentElement.classList.add('app-standalone');
+      } catch (e) {}
+      // Capture the install prompt as early as possible so the in-app
+      // "Install app" action is always available.
+      window.__installPromptEvent = null;
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        window.__installPromptEvent = e;
+        window.dispatchEvent(new Event('installpromptavailable'));
+      });
+      window.addEventListener('appinstalled', function () {
+        window.__installPromptEvent = null;
+      });
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Puter.js AI Client Library -->
+    <script src="https://js.puter.com/v2/"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

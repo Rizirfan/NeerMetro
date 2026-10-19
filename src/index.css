@@ -1,0 +1,514 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+/* App palette exposed as Tailwind utilities (bg-surface, text-content, …) */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-content: var(--content);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-text: var(--brand-text);
+  --color-brand-line: var(--brand-line);
+  --color-brand-tint: var(--brand-tint);
+  --color-brand-tint-2: var(--brand-tint-2);
+  --color-inverse: var(--inverse);
+}
+
+@layer base {
+  :root {
+    --black: #111315;
+    --dark: #181b1d;
+    --gray: #667078;
+    --light-gray: #f4f6f7;
+    --border: #dfe3e5;
+    --white: #ffffff;
+
+    --blue: #0b647a;
+    --blue-light: #b9dce7;
+    --blue-pale: #edf7fa;
+
+    /* Legacy mapping for components */
+    --coum-blue: #0b647a;
+    --coum-cyan: #0b647a;
+    --coum-emerald: #10b981;
+    --coum-dark: #111315;
+    --coum-surface: #ffffff;
+    --coum-border: #dfe3e5;
+
+    /* ── Palette tokens (light) ── */
+    --surface: #ffffff;
+    --surface-2: #f4f6f7;
+    --content: #111315;
+    --muted: #667078;
+    --line: #dfe3e5;
+    --line-2: #f0f2f3;
+    --brand: #0b647a;
+    --brand-strong: #084d5e;
+    --brand-text: #0b647a;
+    --brand-line: #b9dce7;
+    --brand-tint: #edf7fa;
+    --brand-tint-2: #d8edf3;
+    --inverse: #111315;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, "Plus Jakarta Sans", sans-serif;
+    background-color: var(--surface);
+    color: var(--content);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+    overflow-x: hidden;
+    touch-action: manipulation;
+  }
+
+  code, kbd, samp, pre, .font-mono {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--surface);
+  }
+}
+
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
+
+/* Hide scrollbars on horizontal chip rails */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Voice assistant FAB — soft breathing pulse ring */
+.voice-fab-ring::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(11, 100, 122, 0.35) 0%, rgba(11, 100, 122, 0) 70%);
+  animation: voice-pulse 2.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes voice-pulse {
+  0%, 100% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  45% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+/* Engine status pill — soft breathing blink */
+@keyframes status-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+.animate-status {
+  animation: status-blink 2.2s ease-in-out infinite;
+}
+
+/* Gentle reveal for expandable panels */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.2s ease-out;
+}
+
+/* App boot splash */
+@keyframes splash-reveal {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+    visibility: hidden;
+  }
+}
+.animate-splash-reveal {
+  animation: splash-reveal 0.65s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes splash-logo {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.92);
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.animate-splash-logo {
+  animation: splash-logo 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Index.html Design System Classes */
+.eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #0b647a;
+  font-weight: 700;
+  display: block;
+}
+
+.primary-button {
+  background: #111315;
+  color: #ffffff;
+  border: 1px solid #111315;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease-in-out;
+  touch-action: manipulation;
+}
+
+.primary-button:hover {
+  background: #25292c;
+  border-color: #25292c;
+}
+
+.primary-button:active {
+  transform: scale(0.97);
+}
+
+.secondary-button {
+  background: #ffffff;
+  color: #111315;
+  border: 1px solid #dfe3e5;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease-in-out;
+  touch-action: manipulation;
+}
+
+.secondary-button:hover {
+  border-color: #111315;
+}
+
+.secondary-button:active {
+  transform: scale(0.97);
+}
+
+.blue-button {
+  background: #0b647a;
+  color: #ffffff;
+  border: 1px solid #0b647a;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease-in-out;
+  touch-action: manipulation;
+}
+
+.blue-button:hover {
+  background: #084d5e;
+  border-color: #084d5e;
+}
+
+.blue-button:active {
+  transform: scale(0.97);
+}
+
+.cta-button {
+  background: #ffffff;
+  color: #0b647a;
+  border: 1px solid #ffffff;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s ease-in-out;
+  touch-action: manipulation;
+}
+
+.cta-button:hover {
+  background: #edf7fa;
+  border-color: #edf7fa;
+}
+
+.cta-button:active {
+  transform: scale(0.97);
+}
+
+/* Card & input styles with modern smooth edges */
+.coum-card {
+  background: #ffffff;
+  border: 1px solid #dfe3e5;
+  border-radius: 16px;
+}
+
+.coum-input {
+  background: #ffffff;
+  border: 1px solid #dfe3e5;
+  border-radius: 12px;
+  color: #111315;
+  font-size: 13px;
+  padding: 10px 14px;
+  transition: border-color 0.15s;
+}
+
+/* Prevent iOS auto-zoom on focus (inputs under 16px trigger viewport zoom) */
+@media (max-width: 640px) {
+  .coum-input {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+}
+
+.coum-input:focus {
+  border-color: #0b647a;
+  outline: none;
+}
+
+/* Selected / active control — rich dark brand gradient */
+.active-card {
+  background: linear-gradient(135deg, #0b647a 0%, #06404e 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #05333f !important;
+}
+
+/* Descendants inherit white unless they set their own color utility */
+.active-card .text-secondary,
+.active-card .font-mono {
+  color: #b9dce7 !important;
+}
+
+/* Custom Leaflet Map styling */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  z-index: 10;
+  font-family: inherit;
+  background-color: #edf7fa !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #ffffff !important;
+  color: #111315 !important;
+  border: 1px solid #dfe3e5 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.leaflet-popup-tip {
+  background: #ffffff !important;
+}
+
+.leaflet-tooltip {
+  background: #111315 !important;
+  color: #ffffff !important;
+  border: 1px solid #111315 !important;
+  border-radius: 8px !important;
+  padding: 4px 8px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+/* Lift Leaflet zoom control above mobile bottom nav */
+.leaflet-bottom.leaflet-right {
+  bottom: 4.5rem;
+}
+
+@media (min-width: 1024px) {
+  .leaflet-bottom.leaflet-right {
+    bottom: 0;
+  }
+}
+
+/* High contrast mode styles */
+body.high-contrast {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+}
+
+body.high-contrast .coum-card,
+body.high-contrast .bg-white {
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+  border-color: #ffff00 !important;
+}
+
+body.high-contrast button {
+  border: 2px solid #ffff00 !important;
+}
+
+/* Sleek custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f6f7;
+}
+::-webkit-scrollbar-thumb {
+  background: #dfe3e5;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #667078;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Micro-interactions
+   Small, consistent motion for components and controls.
+   ─────────────────────────────────────────────────────────────── */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reusable entry helpers */
+.anim-rise {
+  animation: rise-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-pop {
+  animation: pop-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-drop {
+  animation: drop-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-sheet-in {
+  animation: sheet-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Every interactive control eases between states */
+  button,
+  a,
+  [role='button'],
+  input,
+  select,
+  textarea {
+    transition-property: background-color, border-color, color, box-shadow,
+      opacity, transform, scale;
+    transition-duration: 0.18s;
+    transition-timing-function: ease;
+  }
+
+  /* Tactile press feedback — uses the standalone `scale` property so it never
+     clobbers layout transforms such as -translate-x-1/2 */
+  button:not(:disabled):active,
+  a:active,
+  [role='button']:active {
+    scale: 0.97;
+  }
+
+  /* Branded buttons lift slightly on pointer hover */
+  .primary-button:hover,
+  .secondary-button:hover,
+  .blue-button:hover,
+  .cta-button:hover {
+    transform: translateY(-1px);
+  }
+
+  /* Screen / tab switch reveal */
+  main > * {
+    animation: rise-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Cards gently rise as they enter the viewport layout */
+  .coum-card {
+    animation: rise-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
